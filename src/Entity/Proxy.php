@@ -125,7 +125,7 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
 
     $fields['base_path'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Base Path'))
-      ->setDescription(t('This proxy will handle requests on hostname/base-path. Start with /'))
+      ->setDescription(t('This proxy will handle requests on hostname/base-path. Start with /.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -183,6 +183,29 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
+
+    $fields['api_gateway'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('API Gateway'))
+      ->setDescription(t('The Name of the associated API Gateway.'))
+      ->setSetting('target_type', 'api_gateway')
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'entity_reference_label',
+        'weight' => -3,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ),
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

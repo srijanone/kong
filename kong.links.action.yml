@@ -8,3 +8,8 @@ entity.api_gateway.add_form:
   title: 'Add APIGateway'
   appears_on:
     - entity.api_gateway.collection
+entity.policies.add_form:
+  route_name: entity.policies.add_form
+  title: 'Add Policies'
+  appears_on:
+    - entity.policies.collection

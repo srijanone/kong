@@ -1,0 +1,23 @@
+<?php
+
+
+/**
+ * @file
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use TheRealGambo\Kong\Kong;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * @param EntityInterface $entity
+ */
+function kong_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
+  if($entity->getEntityTypeId() == 'proxy') {
+    // Add logic to get the host & port of the gateway from the entity reference.
+    // Create a service
+    // Get the service id for the service object.
+    // Create the route.
+  }
+}

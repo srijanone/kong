@@ -9,32 +9,32 @@ use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Defines the Apigateway entity.
+ * Defines the Policies entity.
  *
  * @ingroup kong
  *
  * @ContentEntityType(
- *   id = "api_gateway",
- *   label = @Translation("Apigateway"),
+ *   id = "policies",
+ *   label = @Translation("Policies"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\kong\APIGatewayListBuilder",
- *     "views_data" = "Drupal\kong\Entity\APIGatewayViewsData",
+ *     "list_builder" = "Drupal\kong\PoliciesListBuilder",
+ *     "views_data" = "Drupal\kong\Entity\PoliciesViewsData",
  *
  *     "form" = {
- *       "default" = "Drupal\kong\Form\APIGatewayForm",
- *       "add" = "Drupal\kong\Form\APIGatewayForm",
- *       "edit" = "Drupal\kong\Form\APIGatewayForm",
- *       "delete" = "Drupal\kong\Form\APIGatewayDeleteForm",
+ *       "default" = "Drupal\kong\Form\PoliciesForm",
+ *       "add" = "Drupal\kong\Form\PoliciesForm",
+ *       "edit" = "Drupal\kong\Form\PoliciesForm",
+ *       "delete" = "Drupal\kong\Form\PoliciesDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\kong\APIGatewayHtmlRouteProvider",
+ *       "html" = "Drupal\kong\PoliciesHtmlRouteProvider",
  *     },
- *     "access" = "Drupal\kong\APIGatewayAccessControlHandler",
+ *     "access" = "Drupal\kong\PoliciesAccessControlHandler",
  *   },
- *   base_table = "api_gateway",
+ *   base_table = "policies",
  *   translatable = FALSE,
- *   admin_permission = "administer apigateway entities",
+ *   admin_permission = "administer policies entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "name",
@@ -43,16 +43,16 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/api_gateway/{api_gateway}",
- *     "add-form" = "/admin/structure/api_gateway/add",
- *     "edit-form" = "/admin/structure/api_gateway/{api_gateway}/edit",
- *     "delete-form" = "/admin/structure/api_gateway/{api_gateway}/delete",
- *     "collection" = "/admin/structure/api_gateway",
+ *     "canonical" = "/admin/structure/policies/{policies}",
+ *     "add-form" = "/admin/structure/policies/add",
+ *     "edit-form" = "/admin/structure/policies/{policies}/edit",
+ *     "delete-form" = "/admin/structure/policies/{policies}/delete",
+ *     "collection" = "/admin/structure/policies",
  *   },
- *   field_ui_base_route = "api_gateway.settings"
+ *   field_ui_base_route = "policies.settings"
  * )
  */
-class APIGateway extends ContentEntityBase implements APIGatewayInterface {
+class Policies extends ContentEntityBase implements PoliciesInterface {
 
   use EntityChangedTrait;
   use EntityPublishedTrait;
@@ -98,7 +98,7 @@ class APIGateway extends ContentEntityBase implements APIGatewayInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Proxy entity.'))
+      ->setDescription(t('The name of the Policies entity.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -117,49 +117,7 @@ class APIGateway extends ContentEntityBase implements APIGatewayInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['hostname'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Hostname'))
-      ->setDescription(t('Host of the Kong Gateway.'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(TRUE);
-
-    $fields['host'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Port'))
-      ->setDescription(t('Host of the Kong Gateway'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'integer',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(TRUE);
-
-    $fields['status']->setDescription(t('A boolean indicating whether the Apigateway is published.'))
+    $fields['status']->setDescription(t('A boolean indicating whether the Policies is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,

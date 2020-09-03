@@ -38,3 +38,23 @@ view published apigateway entities:
 view unpublished apigateway entities:
   title: 'View unpublished Apigateway entities'
 
+add policies entities:
+  title: 'Create new Policies entities'
+
+administer policies entities:
+  title: 'Administer Policies entities'
+  description: 'Allow to access the administration form to configure Policies entities.'
+  restrict access: true
+
+delete policies entities:
+  title: 'Delete Policies entities'
+
+edit policies entities:
+  title: 'Edit Policies entities'
+
+view published policies entities:
+  title: 'View published Policies entities'
+
+view unpublished policies entities:
+  title: 'View unpublished Policies entities'
+

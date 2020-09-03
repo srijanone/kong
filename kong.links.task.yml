@@ -3,9 +3,14 @@ kong.settings:
   route_name: entity.api_gateway.collection
   base_route: entity.api_gateway.collection
 
-kong.services:
+kong.proxies:
   title: Proxy
   route_name: entity.proxy.collection
+  base_route: entity.api_gateway.collection
+
+kong.policies:
+  title: Policies
+  route_name: entity.policies.collection
   base_route: entity.api_gateway.collection
 
 # Proxy routing definition
@@ -48,5 +53,27 @@ entity.api_gateway.edit_form:
 entity.api_gateway.delete_form:
   route_name:  entity.api_gateway.delete_form
   base_route:  entity.api_gateway.canonical
+  title: Delete
+  weight: 10
+
+# Policies routing definition
+policies.settings_tab:
+  route_name: policies.settings
+  title: 'Settings'
+  base_route: policies.settings
+
+entity.policies.canonical:
+  route_name: entity.policies.canonical
+  base_route: entity.policies.canonical
+  title: 'View'
+
+entity.policies.edit_form:
+  route_name: entity.policies.edit_form
+  base_route: entity.policies.canonical
+  title: 'Edit'
+
+entity.policies.delete_form:
+  route_name:  entity.policies.delete_form
+  base_route:  entity.policies.canonical
   title: Delete
   weight: 10
