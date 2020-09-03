@@ -1,0 +1,7 @@
+type: module
+name: 'Kong Gateway'
+description: 'Expose JSON APIs via Kong Gateway'
+package: APIM
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - drupal:jsonapi

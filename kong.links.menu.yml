@@ -1,0 +1,5 @@
+kong.settings:
+  title: 'Kong Gateway'
+  parent: system.admin_config_services
+  description: "Configure Kong Gateway settings."
+  route_name: kong.settings

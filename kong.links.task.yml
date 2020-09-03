@@ -1,0 +1,9 @@
+kong.settings:
+  title: Kong Gateway Settings
+  route_name: kong.settings
+  base_route: kong.settings
+
+kong.services:
+  title: Proxy
+  route_name: kong.proxy
+  base_route: kong.settings
