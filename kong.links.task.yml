@@ -1,12 +1,13 @@
 kong.settings:
   title: Kong Gateway Settings
-  route_name: kong.settings
-  base_route: kong.settings
+  route_name: entity.api_gateway.collection
+  base_route: entity.api_gateway.collection
 
 kong.services:
   title: Proxy
   route_name: entity.proxy.collection
-  base_route: kong.settings
+  base_route: entity.api_gateway.collection
+
 # Proxy routing definition
 proxy.settings_tab:
   route_name: proxy.settings
@@ -26,5 +27,26 @@ entity.proxy.edit_form:
 entity.proxy.delete_form:
   route_name:  entity.proxy.delete_form
   base_route:  entity.proxy.canonical
+  title: Delete
+  weight: 10
+# Apigateway routing definition
+api_gateway.settings_tab:
+  route_name: api_gateway.settings
+  title: 'Settings'
+  base_route: api_gateway.settings
+
+entity.api_gateway.canonical:
+  route_name: entity.api_gateway.canonical
+  base_route: entity.api_gateway.canonical
+  title: 'View'
+
+entity.api_gateway.edit_form:
+  route_name: entity.api_gateway.edit_form
+  base_route: entity.api_gateway.canonical
+  title: 'Edit'
+
+entity.api_gateway.delete_form:
+  route_name:  entity.api_gateway.delete_form
+  base_route:  entity.api_gateway.canonical
   title: Delete
   weight: 10

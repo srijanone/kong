@@ -9,32 +9,32 @@ use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
- * Defines the Proxy entity.
+ * Defines the Apigateway entity.
  *
  * @ingroup kong
  *
  * @ContentEntityType(
- *   id = "proxy",
- *   label = @Translation("Proxy"),
+ *   id = "api_gateway",
+ *   label = @Translation("Apigateway"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\kong\ProxyListBuilder",
- *     "views_data" = "Drupal\kong\Entity\ProxyViewsData",
+ *     "list_builder" = "Drupal\kong\APIGatewayListBuilder",
+ *     "views_data" = "Drupal\kong\Entity\APIGatewayViewsData",
  *
  *     "form" = {
- *       "default" = "Drupal\kong\Form\ProxyForm",
- *       "add" = "Drupal\kong\Form\ProxyForm",
- *       "edit" = "Drupal\kong\Form\ProxyForm",
- *       "delete" = "Drupal\kong\Form\ProxyDeleteForm",
+ *       "default" = "Drupal\kong\Form\APIGatewayForm",
+ *       "add" = "Drupal\kong\Form\APIGatewayForm",
+ *       "edit" = "Drupal\kong\Form\APIGatewayForm",
+ *       "delete" = "Drupal\kong\Form\APIGatewayDeleteForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\kong\ProxyHtmlRouteProvider",
+ *       "html" = "Drupal\kong\APIGatewayHtmlRouteProvider",
  *     },
- *     "access" = "Drupal\kong\ProxyAccessControlHandler",
+ *     "access" = "Drupal\kong\APIGatewayAccessControlHandler",
  *   },
- *   base_table = "proxy",
+ *   base_table = "api_gateway",
  *   translatable = FALSE,
- *   admin_permission = "administer proxy entities",
+ *   admin_permission = "administer apigateway entities",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "name",
@@ -43,16 +43,16 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/admin/config/services/kong/proxy/{proxy}",
- *     "add-form" = "/admin/config/services/kong/proxy/add",
- *     "edit-form" = "/admin/config/services/kong/proxy/{proxy}/edit",
- *     "delete-form" = "/admin/config/services/kong/proxy/{proxy}/delete",
- *     "collection" = "/admin/config/services/kong/proxy",
+ *     "canonical" = "/admin/structure/api_gateway/{api_gateway}",
+ *     "add-form" = "/admin/structure/api_gateway/add",
+ *     "edit-form" = "/admin/structure/api_gateway/{api_gateway}/edit",
+ *     "delete-form" = "/admin/structure/api_gateway/{api_gateway}/delete",
+ *     "collection" = "/admin/structure/api_gateway",
  *   },
- *   field_ui_base_route = "proxy.settings"
+ *   field_ui_base_route = "api_gateway.settings"
  * )
  */
-class Proxy extends ContentEntityBase implements ProxyInterface {
+class APIGateway extends ContentEntityBase implements APIGatewayInterface {
 
   use EntityChangedTrait;
   use EntityPublishedTrait;
@@ -96,9 +96,9 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
     // Add the published field.
     $fields += static::publishedBaseFieldDefinitions($entity_type);
 
-    $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Proxy entity.'))
+    $fields['hostname'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Hostname'))
+      ->setDescription(t('Host of the Kong Gateway.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -117,72 +117,32 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Proxy is published.'))
+    $fields['post'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Port'))
+      ->setDescription(t('Host of the Kong Gateway'))
+      ->setSettings([
+        'max_length' => 50,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'integer',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['status']->setDescription(t('A boolean indicating whether the Apigateway is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,
       ]);
-
-    $fields['base_path'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Base Path'))
-      ->setDescription(t('This proxy will handle requests on hostname/base-path. Start with /'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(TRUE);
-
-    $fields['description'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Description'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(FALSE);
-
-    $fields['target'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Target (Existing API)'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
-      ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRequired(TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

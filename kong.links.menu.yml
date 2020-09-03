@@ -2,18 +2,32 @@ kong.settings:
   title: 'Kong Gateway'
   parent: system.admin_config_services
   description: "Configure Kong Gateway settings."
-  route_name: kong.settings
+  route_name: entity.api_gateway.collection
 
 # Proxy menu items definition
 entity.proxy.collection:
   title: 'Proxy list'
   route_name: entity.proxy.collection
   description: 'List Proxy entities'
-  parent: kong.settings
+  parent: entity.api_gateway.collection
   weight: 100
 
 proxy.admin.structure.settings:
   title: 'Proxy settings'
   description: 'Configure Proxy entities'
   route_name: proxy.settings
+  parent: system.admin_structure
+
+# Apigateway menu items definition
+entity.api_gateway.collection:
+  title: 'API Gateway list'
+  route_name: entity.api_gateway.collection
+  description: 'List API Gateway entities'
+  parent: kong.settings
+  weight: 100
+
+api_gateway.admin.structure.settings:
+  title: 'API Gateway settings'
+  description: 'Configure APIGateway entities'
+  route_name: api_gateway.settings
   parent: system.admin_structure

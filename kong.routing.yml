@@ -1,9 +1,9 @@
-kong.settings:
-  path: '/admin/config/services/kong'
-  defaults:
-    _form: 'Drupal\kong\Form\KongSettingsForm'
-    _title: 'Configure Kong Gateway'
-  requirements:
-    _permission: 'administer site configuration'
-  options:
-    _admin_route: TRUE
+#kong.settings:
+#  path: '/admin/config/services/kong'
+#  defaults:
+#    _form: 'Drupal\kong\Form\KongSettingsForm'
+#    _title: 'Configure Kong Gateway'
+#  requirements:
+#    _permission: 'administer site configuration'
+#  options:
+#    _admin_route: TRUE
