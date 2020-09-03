@@ -1,0 +1,5 @@
+entity.proxy.add_form:
+  route_name: entity.proxy.add_form
+  title: 'Add Proxy'
+  appears_on:
+    - entity.proxy.collection

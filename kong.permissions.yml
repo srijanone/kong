@@ -1,0 +1,20 @@
+add proxy entities:
+  title: 'Create new Proxy entities'
+
+administer proxy entities:
+  title: 'Administer Proxy entities'
+  description: 'Allow to access the administration form to configure Proxy entities.'
+  restrict access: true
+
+delete proxy entities:
+  title: 'Delete Proxy entities'
+
+edit proxy entities:
+  title: 'Edit Proxy entities'
+
+view published proxy entities:
+  title: 'View published Proxy entities'
+
+view unpublished proxy entities:
+  title: 'View unpublished Proxy entities'
+

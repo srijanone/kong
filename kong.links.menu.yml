@@ -3,3 +3,17 @@ kong.settings:
   parent: system.admin_config_services
   description: "Configure Kong Gateway settings."
   route_name: kong.settings
+
+# Proxy menu items definition
+entity.proxy.collection:
+  title: 'Proxy list'
+  route_name: entity.proxy.collection
+  description: 'List Proxy entities'
+  parent: kong.settings
+  weight: 100
+
+proxy.admin.structure.settings:
+  title: 'Proxy settings'
+  description: 'Configure Proxy entities'
+  route_name: proxy.settings
+  parent: system.admin_structure
