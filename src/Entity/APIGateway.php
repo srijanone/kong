@@ -138,9 +138,9 @@ class APIGateway extends ContentEntityBase implements APIGatewayInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['host'] = BaseFieldDefinition::create('string')
+    $fields['port'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Port'))
-      ->setDescription(t('Host of the Kong Gateway'))
+      ->setDescription(t('Port of the Kong Gateway'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,

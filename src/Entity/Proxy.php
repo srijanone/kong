@@ -57,6 +57,7 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
   use EntityChangedTrait;
   use EntityPublishedTrait;
 
+
   /**
    * {@inheritdoc}
    */
@@ -87,6 +88,15 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
     return $this;
   }
 
+  public function setExternalIdentifier($id) {
+    $this->set('external_identifier', $id);
+    return $this;
+  }
+
+  public function getExternalIdentifier() {
+    return $this->get('external_identifier')->value;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -98,7 +108,7 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Proxy entity.'))
+      ->setDescription(t('The name of the Proxy.'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -144,12 +154,8 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['description'] = BaseFieldDefinition::create('string')
+    $fields['description'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Description'))
-      ->setSettings([
-        'max_length' => 50,
-        'text_processing' => 0,
-      ])
       ->setDefaultValue('')
       ->setDisplayOptions('view', [
         'label' => 'above',
@@ -205,7 +211,12 @@ class Proxy extends ContentEntityBase implements ProxyInterface {
         'weight' => -4,
       ))
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['external_identifier'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('External Identifier'))
+      ->setDescription(t('External Identifier.'));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))

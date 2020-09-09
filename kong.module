@@ -7,17 +7,63 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use TheRealGambo\Kong\Kong;
+use Drupal\kong\Entity\Proxy;
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_entity_update().
  *
  * @param EntityInterface $entity
  */
-function kong_entity_insert(Drupal\Core\Entity\EntityInterface $entity) {
-  if($entity->getEntityTypeId() == 'proxy') {
-    // Add logic to get the host & port of the gateway from the entity reference.
-    // Create a service
-    // Get the service id for the service object.
-    // Create the route.
+function kong_entity_presave(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity instanceof Proxy) {
+    $api_gateway = $entity->get('api_gateway')->entity;
+    $hostname = $api_gateway->get('hostname')->value;
+    $port = $api_gateway->get('port')->value;
+    // @TODO: Add abstraction and create a generic API Gateway Object.
+    $kong = new Kong($hostname, $port);
+    // Create a service in Kong.
+    $service_object = $kong->getServiceObject();
+    $target = $entity->get('target')->value;
+    $service_object->add(['name' => $entity->get('name')->value, 'url' => $target]);
+    $response = $service_object->getResponse();
+    $id = $response->body['id'];
+    // Register the proxy.
+    $route_object = $kong->getRouteObject();
+    $route_object->add([
+      'name' => $entity->get('name')->value,
+      'service' => [
+        'id' => $id,
+      ],
+      'paths' => [
+        $entity->get('base_path')->value,
+      ]
+    ]);
+    $response = $route_object->getResponse();
+    $id = $response->body['id'];
+
+    $entity->setExternalIdentifier($id);
+  }
+
+  if ($entity instanceof \Drupal\kong\Entity\Policies) {
+    $route = $entity->get('proxy')->entity;
+    $api_gateway = $route->get('api_gateway')->entity;
+    $hostname = $api_gateway->get('hostname')->value;
+    $port = $api_gateway->get('port')->value;
+    $kong = new Kong($hostname, $port);
+    $plugin_object = $kong->getPluginObject();
+    $route = $entity->get('proxy')->entity;
+    $route_id = $route->get('external_identifier')->value;
+    $plugin_object->add([
+      'name' => $entity->get('name')->value,
+      'route' => [
+        'id' => $route_id,
+      ],
+      'config' => [
+        'minute' => 5,
+      ]
+    ]);
+    $response = $plugin_object->getResponse();
+    $id = $response->body['id'];
+    $entity->setExternalIdentifier($id);
   }
 }

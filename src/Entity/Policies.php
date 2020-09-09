@@ -87,6 +87,15 @@ class Policies extends ContentEntityBase implements PoliciesInterface {
     return $this;
   }
 
+  public function setExternalIdentifier($id) {
+    $this->set('external_identifier', $id);
+    return $this;
+  }
+
+  public function getExternalIdentifier() {
+    return $this->get('external_identifier')->value;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -117,11 +126,97 @@ class Policies extends ContentEntityBase implements PoliciesInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
+    $fields['description'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Description'))
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(FALSE);
+
     $fields['status']->setDescription(t('A boolean indicating whether the Policies is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,
       ]);
+
+    $fields['type'] = BaseFieldDefinition::create('list_string')
+      ->setSettings([
+        'allowed_values' => [
+          'rate_limiting' => 'Rate limiting',
+          'authn' => 'Authentication',
+        ]
+      ])
+      ->setLabel(t('Type'))
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['proxy'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Proxy'))
+      ->setDescription(t('The Name of the associated Proxy.'))
+      ->setSetting('target_type', 'proxy')
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('view', array(
+        'label' => 'above',
+        'type' => 'entity_reference_label',
+        'weight' => -3,
+      ))
+      ->setDisplayOptions('form', array(
+        'type' => 'entity_reference_autocomplete',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'autocomplete_type' => 'tags',
+          'placeholder' => '',
+        ),
+        'weight' => -4,
+      ))
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['rate_limiting'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Rate Limiting'))
+      ->setDescription(t('Enter the rate limiting/minute.'))
+      ->setSettings([
+        'max_length' => 50,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'integer',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+
+    $fields['external_identifier'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('External Identifier'))
+      ->setDescription(t('External Identifier.'));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
